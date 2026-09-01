@@ -713,19 +713,19 @@ kubectl -n falco logs -l app.kubernetes.io/name=falco --tail=50
 Em outro terminal, aplique o pod-alvo:
 
 ```console
-kubectl apply -f demos/04-runtime/pod-vitima.yaml
+kubectl apply -f demos/04-runtime/pod-observado.yaml
 ```
 
 Aguarde o pod ficar pronto:
 
 ```console
-kubectl -n producao wait --for=condition=Ready pod/vitima --timeout=60s
+kubectl -n producao wait --for=condition=Ready pod/observado --timeout=60s
 ```
 
 Acesse o pod:
 
 ```console
-kubectl -n producao exec -it vitima -- sh
+kubectl -n producao exec -it observado -- sh
 ```
 
 Os próximos comandos são executados dentro do contêiner.
@@ -755,7 +755,7 @@ kubectl -n falco logs -l app.kubernetes.io/name=falcosidekick --tail=20
 Remova o pod:
 
 ```console
-kubectl -n producao delete pod vitima --ignore-not-found
+kubectl -n producao delete pod observado --ignore-not-found
 ```
 
 ---
