@@ -1,16 +1,14 @@
-# Exemplo de imagem endurecida: multi-stage, distroless e nonroot.
+# Build multi-stage com imagem final distroless e nonroot.
 
-# Estagio de build. A tag flutuante 1.25 traz o ultimo patch do Go 1.25,
-# com as correcoes mais recentes da biblioteca padrao (origem das
-# vulnerabilidades "gobinary"). Recompilar com um Go recente as reduz.
+# A tag seleciona a linha Go 1.25; rebuilds com toolchain corrigida podem reduzir achados gobinary.
 FROM golang:1.25-bookworm AS build
 WORKDIR /src
 COPY app/go.mod .
 COPY app/main.go .
-# Binario estatico: nao depende de libc e executa em imagem sem sistema.
+# Binario estatico para execucao sem libc.
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o /server .
 
-# Estagio final: apenas o binario, sem shell e sem gerenciador de pacotes.
+# Imagem final sem shell nem gerenciador de pacotes.
 FROM gcr.io/distroless/static-debian12:nonroot
 COPY --from=build /server /server
 USER nonroot:nonroot

@@ -1,5 +1,4 @@
-# Kyverno tambem realiza mutacao: injeta um securityContext seguro quando
-# ausente, tornando o padrao seguro sem exigir acao do autor do manifesto.
+# Injeta securityContext quando ausente.
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
@@ -13,7 +12,7 @@ spec:
         any:
           - resources:
               kinds: ["Pod"]
-              # Inclui dev para demonstrar a mutacao sem interferencia do PSA.
+              # Inclui dev, sem PSA, para isolar a mutacao Kyverno.
               namespaces: ["producao", "dev"]
       mutate:
         patchStrategicMerge:

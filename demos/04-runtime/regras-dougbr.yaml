@@ -1,7 +1,4 @@
-# Regras Falco personalizadas, com saida em portugues.
-# As regras nao filtram por k8s.ns.name: esse campo pode nao estar populado
-# conforme a versao do Falco, o que impediria o disparo. O namespace ainda
-# aparece na saida quando disponivel.
+# Nao filtra por k8s.ns.name, pois o campo pode estar ausente em algumas configuracoes do Falco; quando disponivel, permanece no output.
 - rule: DOUGBR Shell aberto em container
   desc: Alguem abriu um shell interativo dentro de um container
   condition: >

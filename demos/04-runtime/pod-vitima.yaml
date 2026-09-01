@@ -1,6 +1,4 @@
-# Pod legitimo no namespace producao, usado no bloco de runtime. Executa
-# alpine (com shell) para reproduzir o acesso interativo e a leitura de
-# credenciais que disparam os alertas do Falco.
+# Pod nao privilegiado com shell para disparar alertas Falco de shell e leitura de credenciais.
 apiVersion: v1
 kind: Pod
 metadata:

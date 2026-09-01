@@ -4,3 +4,6 @@
 # artefatos temporarios
 /tmp/
 sbom.json
+
+# Roteiro local do professor
+GUIA-PROFESSOR.md

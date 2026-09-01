@@ -1,6 +1,4 @@
-# Namespace sem Pod Security Admission, usado para demonstrar o Kyverno de
-# forma isolada: sem PSA, o bloqueio e a mensagem partem apenas do Kyverno,
-# tornando claro qual controle atuou.
+# Namespace sem labels PSA; bloqueios e mensagens partem apenas do Kyverno.
 apiVersion: v1
 kind: Namespace
 metadata:

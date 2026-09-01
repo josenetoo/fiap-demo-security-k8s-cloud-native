@@ -1,7 +1,4 @@
-# Demo 1b - RBAC excessivo com token de ServiceAccount.
-# Conceder cluster-admin a uma ServiceAccount e um erro comum em producao.
-# A partir desse binding, qualquer pod que use a ServiceAccount tem controle
-# total do cluster, mesmo sem ser privilegiado e sem hostPath.
+# A ServiceAccount recebe cluster-admin; qualquer Pod que a utilize controla o cluster.
 apiVersion: v1
 kind: ServiceAccount
 metadata:

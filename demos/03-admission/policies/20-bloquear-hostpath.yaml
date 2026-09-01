@@ -14,6 +14,11 @@ spec:
         any:
           - resources:
               kinds: ["Pod"]
+      # Exclui namespaces de infraestrutura cujos agentes exigem privilegios.
+      exclude:
+        any:
+          - resources:
+              namespaces: ["kube-system", "kube-public", "kube-node-lease", "kyverno", "falco"]
       validate:
         message: >-
           Volume hostPath nao e permitido: da acesso direto ao disco do no.

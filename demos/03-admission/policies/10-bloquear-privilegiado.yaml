@@ -1,5 +1,4 @@
-# Kyverno: regra sob medida, com mensagem propria. Complementa o PSA,
-# que aplica perfis fixos.
+# Policy Kyverno em Enforce, complementar aos perfis fixos do PSA.
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
@@ -8,7 +7,6 @@ metadata:
     policies.kyverno.io/title: Proibir containers privilegiados
     policies.kyverno.io/severity: high
 spec:
-  # Em producao, iniciar em Audit e migrar para Enforce apos validar o impacto.
   validationFailureAction: Enforce
   background: true
   rules:
@@ -17,6 +15,11 @@ spec:
         any:
           - resources:
               kinds: ["Pod"]
+      # Exclui namespaces de infraestrutura cujos agentes exigem privilegios.
+      exclude:
+        any:
+          - resources:
+              namespaces: ["kube-system", "kube-public", "kube-node-lease", "kyverno", "falco"]
       validate:
         message: >-
           Container privilegiado nao e permitido. Se voce precisa de uma

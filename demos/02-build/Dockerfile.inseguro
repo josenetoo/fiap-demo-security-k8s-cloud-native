@@ -1,19 +1,14 @@
-# Exemplo de imagem insegura, usado para contraste na analise do Trivy.
+# Base completa com tag mutavel amplia a superficie de ataque.
 FROM golang:1.22
-# Tag movel (nao fixada) e base completa (~800 MB, com shell e gerenciador
-# de pacotes), o que amplia a superficie de ataque.
 
 WORKDIR /app
 COPY app/ .
 RUN go build -o /server .
 
-# Segredo embutido no Dockerfile: torna-se camada e histórico da imagem.
-# Credenciais AWS de exemplo, no formato reconhecido por regra nativa do
-# Trivy/gitleaks (AKIA... + secret de 40 caracteres), para que a analise
-# de segredos tenha o que detectar na demonstracao.
+# Credenciais AWS ficticias em formato detectavel por Trivy/gitleaks; permanecem na camada e no historico da imagem.
 ENV AWS_ACCESS_KEY_ID="AKIAIOSFODNN7EXAMPLE"
 ENV AWS_SECRET_ACCESS_KEY="wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
 
 EXPOSE 8080
-# Sem instrucao USER: o processo executa como root.
+# USER omitido intencionalmente: o processo executa como root.
 CMD ["/server"]

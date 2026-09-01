@@ -1,6 +1,4 @@
-# Demo 1c - Pod sem indicadores obvios de risco.
-# Sem privileged, hostPath ou hostNetwork; passaria em uma revisao superficial.
-# O unico ponto e o serviceAccountName, que herda o cluster-admin do binding.
+# Pod sem privilegios explicitos que herda cluster-admin via serviceAccountName.
 apiVersion: v1
 kind: Pod
 metadata:

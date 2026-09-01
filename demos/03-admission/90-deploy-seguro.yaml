@@ -1,4 +1,4 @@
-# Deploy em conformidade com todas as politicas, aplicado no namespace producao.
+# Deployment compativel com as policies do namespace producao.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,14 +15,14 @@ spec:
       automountServiceAccountToken: false
       securityContext:
         runAsNonRoot: true
-        runAsUser: 65532        # UID numerico do distroless nonroot
-        runAsGroup: 65532       # necessario para o kubelet verificar nao-root
+        runAsUser: 65532        # UID do usuario nonroot da imagem distroless
+        runAsGroup: 65532       # GID do grupo nonroot da imagem distroless
         seccompProfile:
           type: RuntimeDefault
       containers:
         - name: app
           image: dougbr/app:seguro
-          imagePullPolicy: IfNotPresent      # utiliza a imagem local (kind load)
+          imagePullPolicy: IfNotPresent      # usa a imagem carregada por kind load
           ports:
             - containerPort: 8080
           securityContext:

@@ -1,8 +1,5 @@
-# Pipeline de seguranca — DOUGBR
-# Jobs: code-scan (segredos e configuracao) e build-scan (vulnerabilidades e SBOM).
-# Este pipeline analisa os artefatos seguros (Dockerfile.seguro e a aplicacao)
-# e conclui com sucesso. A imagem e construida no runner e analisada localmente;
-# nao e publicada em registry, portanto nao requer autenticacao nem secrets.
+# Gates: scans de configuracao e segredos usam exit-code 1.
+# Informativo: vulnerabilidades da imagem usam exit-code 0; o SBOM e publicado.
 name: security-pipeline
 
 on:
@@ -47,10 +44,7 @@ jobs:
       - name: Build da imagem segura (distroless)
         run: docker build -f demos/02-build/Dockerfile.seguro -t dougbr/app:ci demos/02-build
 
-      # Analise informativa: nao encerra o job. Vulnerabilidades da biblioteca
-      # padrao do Go surgem com frequencia e sao corrigidas recompilando com um
-      # Go mais recente; a contencao dessas falhas e tratada no ciclo de build,
-      # nao como bloqueio deste pipeline de demonstracao.
+      # Informativo: achados da imagem nao encerram o job; a correcao ocorre por rebuild com uma toolchain atualizada.
       - name: Trivy — vulnerabilidades na imagem (informativo)
         uses: aquasecurity/trivy-action@master
         with:

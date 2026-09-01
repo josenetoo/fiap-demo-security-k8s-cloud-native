@@ -1,21 +1,16 @@
-# Segurança em Kubernetes com Cloud Native — Masterclass DOUGBR
+# Segurança em Kubernetes com Cloud Native
 
-Demo hands-on por **José Neto** (Cloud Solution Engineer & Tech Lead, Coordenador da PosTech de
-DevOps e Arquitetura Cloud da FIAP), para o canal **DOUGBR - DevOps User Group Brazil**.
+Laboratório de segurança cloud native em Kubernetes, executado localmente em `kind` sobre Docker Desktop. A jornada `LAPTOP → CI/CD → CLUSTER` cobre os 4Cs.
 
-Jornada: `LAPTOP → CI/CD → CLUSTER`, cobrindo os 4C's. Roda local em `kind`
-(base: Docker Desktop). O CI/CD roda ao vivo no GitHub Actions.
+## Roteiro operacional: [HANDS-ON.md](HANDS-ON.md)
 
-## 👉 Comece aqui: [HANDS-ON.md](HANDS-ON.md)
-
-É o passo a passo único da live — setup, os 4 demos e o CI, com o comando, como
-explicar e o resultado esperado de cada passo.
+Contém o setup, quatro cenários e o CI, com comandos e resultados esperados.
 
 ## Estrutura
 
 ```
-HANDS-ON.md           o roteiro executável (comece por ele)
-.github/workflows/    pipeline: security.yml (aprovado) + security-fail-demo.yml (reprovado)
+HANDS-ON.md           roteiro operacional
+.github/workflows/    gates de configuração/segredos e análise informativa da imagem
 demos/
   01-ataque/     pods de ataque
   02-build/      Dockerfiles + app (imagem insegura vs. distroless)

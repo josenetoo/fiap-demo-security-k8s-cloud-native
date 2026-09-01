@@ -1,7 +1,4 @@
-# Variante de demonstracao que falha no gate: analisa os artefatos inseguros
-# (Dockerfile.inseguro, com base completa, root e segredo embutido). O Trivy
-# detecta a configuracao incorreta e o segredo, e o job encerra com erro.
-# Execucao manual apenas.
+# Teste negativo manual: achados de configuracao ou segredos nos artefatos inseguros falham o gate.
 name: security-pipeline-fail-demo
 
 on:
