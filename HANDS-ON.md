@@ -391,9 +391,9 @@ o SBOM é publicado como artefato.
 > "A verificação local orienta; o gate do CI é obrigatório. Código que não passa
 > no gate não avança para o merge."
 
-**6b. A execução reprovada** (dispare ao vivo — conclui em cerca de 30 segundos).
+**6b. A execução reprovada** (dispare ao vivo — conclui em menos de um minuto).
 
-Dispare o workflow que constrói a imagem insegura:
+Dispare o workflow que analisa os artefatos inseguros:
 ```bash
 gh workflow run security-fail-demo.yml
 ```

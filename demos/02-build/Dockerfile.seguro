@@ -1,9 +1,9 @@
 # Exemplo de imagem endurecida: multi-stage, distroless e nonroot.
 
-# Estagio de build. A tag flutuante 1.23 traz o ultimo patch do Go 1.23,
+# Estagio de build. A tag flutuante 1.25 traz o ultimo patch do Go 1.25,
 # com as correcoes mais recentes da biblioteca padrao (origem das
 # vulnerabilidades "gobinary"). Recompilar com um Go recente as reduz.
-FROM golang:1.23-bookworm AS build
+FROM golang:1.25-bookworm AS build
 WORKDIR /src
 COPY app/go.mod .
 COPY app/main.go .
