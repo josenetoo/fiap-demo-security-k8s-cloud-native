@@ -1,0 +1,48 @@
+# Deploy em conformidade com todas as politicas, aplicado no namespace producao.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+  namespace: producao
+spec:
+  replicas: 2
+  selector:
+    matchLabels: { app: dougbr }
+  template:
+    metadata:
+      labels: { app: dougbr }
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532        # UID numerico do distroless nonroot
+        runAsGroup: 65532       # necessario para o kubelet verificar nao-root
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: app
+          image: dougbr/app:seguro
+          imagePullPolicy: IfNotPresent      # utiliza a imagem local (kind load)
+          ports:
+            - containerPort: 8080
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            requests: { cpu: 10m, memory: 16Mi }
+            limits:   { cpu: 100m, memory: 64Mi }
+          readinessProbe:
+            httpGet: { path: /healthz, port: 8080 }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app
+  namespace: producao
+spec:
+  selector: { app: dougbr }
+  ports:
+    - port: 80
+      targetPort: 8080

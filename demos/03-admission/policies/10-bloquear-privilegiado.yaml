@@ -1,0 +1,35 @@
+# Kyverno: regra sob medida, com mensagem propria. Complementa o PSA,
+# que aplica perfis fixos.
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: bloquear-privilegiado
+  annotations:
+    policies.kyverno.io/title: Proibir containers privilegiados
+    policies.kyverno.io/severity: high
+spec:
+  # Em producao, iniciar em Audit e migrar para Enforce apos validar o impacto.
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: nada-de-privileged
+      match:
+        any:
+          - resources:
+              kinds: ["Pod"]
+      validate:
+        message: >-
+          Container privilegiado nao e permitido. Se voce precisa de uma
+          capability especifica, peca ela em securityContext.capabilities.add
+          e justifique no PR.
+        pattern:
+          spec:
+            =(ephemeralContainers):
+              - =(securityContext):
+                  =(privileged): "false"
+            =(initContainers):
+              - =(securityContext):
+                  =(privileged): "false"
+            containers:
+              - =(securityContext):
+                  =(privileged): "false"

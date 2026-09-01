@@ -1,0 +1,6 @@
+# chaves cosign geradas localmente - NUNCA commitar a privada
+.cosign/
+*.key
+# artefatos temporarios
+/tmp/
+sbom.json

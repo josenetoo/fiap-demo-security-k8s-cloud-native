@@ -1,0 +1,21 @@
+# Pod legitimo no namespace producao, usado no bloco de runtime. Executa
+# alpine (com shell) para reproduzir o acesso interativo e a leitura de
+# credenciais que disparam os alertas do Falco.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: vitima
+  namespace: producao
+  labels: { app: vitima }
+spec:
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1000
+    seccompProfile: { type: RuntimeDefault }
+  containers:
+    - name: app
+      image: alpine:3.20
+      command: ["sleep", "infinity"]
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities: { drop: ["ALL"] }

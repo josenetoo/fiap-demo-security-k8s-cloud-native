@@ -1,0 +1,30 @@
+# Kyverno tambem realiza mutacao: injeta um securityContext seguro quando
+# ausente, tornando o padrao seguro sem exigir acao do autor do manifesto.
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: mutar-defaults-seguros
+  annotations:
+    policies.kyverno.io/title: Injetar securityContext seguro
+spec:
+  rules:
+    - name: default-securitycontext
+      match:
+        any:
+          - resources:
+              kinds: ["Pod"]
+              # Inclui dev para demonstrar a mutacao sem interferencia do PSA.
+              namespaces: ["producao", "dev"]
+      mutate:
+        patchStrategicMerge:
+          spec:
+            +(securityContext):
+              runAsNonRoot: true
+              seccompProfile:
+                type: RuntimeDefault
+            containers:
+              - (name): "*"
+                +(securityContext):
+                  allowPrivilegeEscalation: false
+                  capabilities:
+                    drop: ["ALL"]

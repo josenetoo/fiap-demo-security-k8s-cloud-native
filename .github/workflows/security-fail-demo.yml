@@ -1,0 +1,30 @@
+# Variante de demonstracao que falha no gate: analisa a imagem insegura
+# (base completa, root, segredo embutido). O Trivy detecta o segredo e a
+# configuracao incorreta, e o job encerra com erro. Execucao manual apenas.
+name: security-pipeline-fail-demo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  gate:
+    name: "Gate — imagem insegura"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Trivy config (Dockerfile inseguro)
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          scan-type: config
+          scan-ref: demos/02-build/Dockerfile.inseguro
+          severity: HIGH,CRITICAL
+          exit-code: "1"
+
+      - name: Trivy fs (segredo embutido)
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          scan-type: fs
+          scan-ref: demos/02-build
+          scanners: secret
+          exit-code: "1"

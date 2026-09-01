@@ -1,0 +1,12 @@
+# Pod Security Admission (nativo do Kubernetes desde a 1.25).
+# Aplicado por label de namespace. O perfil restricted bloqueia pods
+# privilegiados. Modos: enforce (bloqueia), audit (registra), warn (avisa).
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: producao
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: latest
+    pod-security.kubernetes.io/warn: restricted
+    pod-security.kubernetes.io/audit: restricted

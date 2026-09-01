@@ -1,0 +1,22 @@
+# Demo 1b - RBAC excessivo com token de ServiceAccount.
+# Conceder cluster-admin a uma ServiceAccount e um erro comum em producao.
+# A partir desse binding, qualquer pod que use a ServiceAccount tem controle
+# total do cluster, mesmo sem ser privilegiado e sem hostPath.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: app-legado
+  namespace: ataque
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: app-legado-cluster-admin
+subjects:
+  - kind: ServiceAccount
+    name: app-legado
+    namespace: ataque
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io

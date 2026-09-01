@@ -1,0 +1,14 @@
+# Demo 1c - Pod sem indicadores obvios de risco.
+# Sem privileged, hostPath ou hostNetwork; passaria em uma revisao superficial.
+# O unico ponto e o serviceAccountName, que herda o cluster-admin do binding.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-comum
+  namespace: ataque
+spec:
+  serviceAccountName: app-legado
+  containers:
+    - name: app
+      image: alpine:3.20
+      command: ["sleep", "infinity"]
